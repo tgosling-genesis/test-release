@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <scm>
-        <developerConnection>scm:git:https://github.com/tgosling-genesis/fix-server.git</developerConnection>
+        <developerConnection>scm:git:https://github.com/tgosling-genesis/test-release.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
