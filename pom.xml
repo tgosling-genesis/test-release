@@ -8,7 +8,7 @@
     </scm>
 
     <properties>
-        
+		<kotlin.version>1.5.31</kotlin.version>
     </properties>
 
     <groupId>global.genesis.tgosling</groupId>
