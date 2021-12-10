@@ -2,6 +2,11 @@
 
 name: Genesis Maven GitFlow Release
 
+inputs:
+  new dev version:
+    description: 'Next development version to roll to'
+    required: true
+
 on:
   workflow_dispatch:
 
