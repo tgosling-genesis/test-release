@@ -5,7 +5,7 @@
     <parent>
         <artifactId>test-release</artifactId>
         <groupId>global.genesis.tgosling</groupId>
-        <version>1.0.12-SNAPSHOT</version>
+        <version>1.0.12</version>
     </parent>
 
     <artifactId>submodule</artifactId>
