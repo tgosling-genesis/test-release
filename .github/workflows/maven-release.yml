@@ -52,7 +52,7 @@ jobs:
         git push origin temp/${RELEASE_BRANCH}
     - name: Create Pull request to master with release versions
       run : |
-        curl --user ${githubAPIUser}:${githubAPIToken} -X POST -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/tgosling-genesis/test-release/pulls  -d '{"title":"Automatic PR created from release","head":"'${RELEASE_BRANCH}'-tomaster","base":"master"}'
+        curl --user ${githubAPIUser}:${githubAPIToken} -X POST -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/tgosling-genesis/test-release/pulls  -d '{"title":"Automatic PR created from release","head":"temp/'${RELEASE_BRANCH}'","base":"master"}'
     - name: Create Pull request to develop with new snapshot versions
       run : | 
         curl --user ${githubAPIUser}:${githubAPIToken} -X POST -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/tgosling-genesis/test-release/pulls  -d '{"title":"Automatic PR created from release","head":"'${RELEASE_BRANCH}'","base":"develop"}'
