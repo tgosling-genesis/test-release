@@ -17,6 +17,7 @@ jobs:
     #  genesisArtifactoryPassword: ${{ secrets.JFROG_PASSWORD }}
       githubAPIUser: ${{ github.actor }}
       githubAPIToken: ${{ secrets.PAT }}
+      NEW_DEVELOPMENT_VERSION: ${{inputs.NEW_DEVELOPMENT_VERSION}}
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 11
@@ -49,7 +50,7 @@ jobs:
         git checkout $RELEASE_BRANCH
     - name: Prepare Maven Release 
       run: |
-        mvn -B release:prepare -DdevelopmentVersion=${{inputs.NEW_DEVELOPMENT_VERSION}}
+        mvn -B release:prepare -DdevelopmentVersion=${NEW_DEVELOPMENT_VERSION}
     - name: Create temporary branch for master PR
       run : |
         git branch temp/${RELEASE_BRANCH} HEAD~1
