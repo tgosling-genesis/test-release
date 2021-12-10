@@ -5,7 +5,7 @@ name: Genesis Maven GitFlow Release
 on:
   workflow_dispatch:
     inputs:
-      newDevVersion:
+      new-dev-version:
         description: 'Next development version to roll to'
         required: true
 
@@ -17,7 +17,7 @@ jobs:
     #  genesisArtifactoryPassword: ${{ secrets.JFROG_PASSWORD }}
       githubAPIUser: ${{ github.actor }}
       githubAPIToken: ${{ secrets.PAT }}
-      NEW_DEVELOPMENT_VERSION: ${{inputs.newdevversion}}
+      NEW_DEVELOPMENT_VERSION: ${{github.event.inputs.new-dev-version}}
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 11
