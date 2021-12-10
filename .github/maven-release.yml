@@ -1,0 +1,57 @@
+# This workflow will release a product using the gitflow branch model, creating a tag on the master branch and rolling the head of the develop branch to the next snapshot version
+
+name: Genesis Maven GitFlow Release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+    #  genesisArtifactoryUser: ${{ secrets.JFROG_USERNAME }}
+    #  genesisArtifactoryPassword: ${{ secrets.JFROG_PASSWORD }}
+      githubAPIUser: ${{ github.actor }}
+      githubAPIToken: ${{ secrets.PAT }}
+      releaseBranch:
+      version:
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+    #- name: Setup Maven
+    #  run: |
+    #    cp cicd/settings.xml $HOME/.m2
+    #- name: Install foundation db
+    #  uses: Clikengo/foundationdb-actions-install@v1.0.1
+    #  with:
+    #    version: 6.2.22
+    #- name: Configure FDB
+    #  run: |
+    #    fdbcli --exec "configure single ssd"
+    #    fdbcli --exec "status"
+    - name: Create release branch
+      run : |
+        env.version=$(grep version pom.xml | sed -n '3p' | sed -E 's/\s|[a-z]|<|>|\///g'| cut -d'-' -f'1')
+        env.releaseBranch=release/$env.version
+        git branch $env.releaseBranch
+        git checkout $env.releaseBranch
+    - name: Prepare Maven Release 
+      run: |
+        mvn -B release:prepare
+    - name: Create temporary branch for master PR
+      run : |
+        git branch ${env.releaseBranch}-tomaster HEAD~1
+        git push origin ${env.releaseBranch}-tomaster
+    - name: Create Pull request to master with release versions
+      run : |
+        
+    - name: Create Pull request to develop with new snapshot versions
+      run : | 
+        
+    - name: Perform Maven Release 
+      run: |
+        mvn release:perform
