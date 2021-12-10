@@ -4,7 +4,7 @@
 
     <scm>
         <developerConnection>scm:git:https://github.com/tgosling-genesis/test-release.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>test-release-1.0.11</tag>
     </scm>
 
     <properties>
@@ -14,7 +14,7 @@
     <groupId>global.genesis.tgosling</groupId>
     <artifactId>test-release</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.11-SNAPSHOT</version>
+    <version>1.0.11</version>
 
     <modules>
         <module>submodule</module>
