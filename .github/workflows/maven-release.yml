@@ -49,7 +49,7 @@ jobs:
         git checkout $RELEASE_BRANCH
     - name: Prepare Maven Release 
       run: |
-        mvn -B release:prepare -DdevelopmentVersion=${INPUT_NEW_DEVELOPMENT_VERSION}
+        mvn -B release:prepare -DdevelopmentVersion=${{inputs.NEW_DEVELOPMENT_VERSION}}
     - name: Create temporary branch for master PR
       run : |
         git branch temp/${RELEASE_BRANCH} HEAD~1
