@@ -12,7 +12,7 @@ jobs:
     #  genesisArtifactoryUser: ${{ secrets.JFROG_USERNAME }}
     #  genesisArtifactoryPassword: ${{ secrets.JFROG_PASSWORD }}
       githubAPIUser: ${{ github.actor }}
-      githubAPIToken: ${{ secrets.PAT }}
+      githubAPIToken: ${{ secrets.token }}
       releaseBranch:
       version:
     steps:
@@ -48,10 +48,10 @@ jobs:
         git push origin ${env.releaseBranch}-tomaster
     - name: Create Pull request to master with release versions
       run : |
-        
+        curl --user $(env.githubAPIUser):$(env.githubAPIToken) -X POST -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/tgosling-genesis/test-release/pulls  -d '{"title":"Automatic PR created from release","head":"'${RELEASE_BRANCH}'-tomaster","base":"master"}'
     - name: Create Pull request to develop with new snapshot versions
       run : | 
-        
+        curl --user $(env.githubAPIUser):$(env.githubAPIToken) -X POST -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/tgosling-genesis/test-release/pulls  -d '{"title":"Automatic PR created from release","head":"'${RELEASE_BRANCH}'","base":"develop"}'
     - name: Perform Maven Release 
       run: |
         mvn release:perform
