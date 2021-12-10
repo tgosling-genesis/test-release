@@ -2,13 +2,12 @@
 
 name: Genesis Maven GitFlow Release
 
-inputs:
-  new dev version:
-    description: 'Next development version to roll to'
-    required: true
-
 on:
   workflow_dispatch:
+    inputs:
+      newDevelopmentVersion:
+        description: 'Next development version to roll to'
+        required: true
 
 jobs:
   build:
@@ -50,7 +49,7 @@ jobs:
         git checkout $RELEASE_BRANCH
     - name: Prepare Maven Release 
       run: |
-        mvn -B release:prepare
+        mvn -B release:prepare -DdevelopmentVersion=${newDevelopmentVersion}
     - name: Create temporary branch for master PR
       run : |
         git branch temp/${RELEASE_BRANCH} HEAD~1
