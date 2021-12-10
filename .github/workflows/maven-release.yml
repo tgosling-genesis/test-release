@@ -13,8 +13,6 @@ jobs:
     #  genesisArtifactoryPassword: ${{ secrets.JFROG_PASSWORD }}
       githubAPIUser: ${{ github.actor }}
       githubAPIToken: ${{ secrets.PAT }}
-      releaseBranch:
-      version:
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 11
@@ -33,25 +31,33 @@ jobs:
     #  run: |
     #    fdbcli --exec "configure single ssd"
     #    fdbcli --exec "status"
+    - name : Configure git settings for automated commits
+      run : | 
+        git config user.name auto-release
+        git config user.email auto.release@genesis.global
     - name: Create release branch
       run : |
-        env.version=$(grep version pom.xml | sed -n '3p' | sed -E 's/\s|[a-z]|<|>|\///g'| cut -d'-' -f'1')
-        env.releaseBranch=release/$env.version
-        git branch $env.releaseBranch
-        git checkout $env.releaseBranch
+        export VERSION=$(grep version pom.xml | sed -n '3p' | sed -E 's/\s|[a-z]|<|>|\///g'| cut -d'-' -f'1')
+        echo VERSION=$VERSION >> $GITHUB_ENV
+        export RELEASE_BRANCH=release/$VERSION
+        echo RELEASE_BRANCH=$RELEASE_BRANCH >> $GITHUB_ENV
+        git branch $RELEASE_BRANCH
+        git checkout $RELEASE_BRANCH
     - name: Prepare Maven Release 
       run: |
         mvn -B release:prepare
     - name: Create temporary branch for master PR
       run : |
-        git branch ${env.releaseBranch}-tomaster HEAD~1
-        git push origin ${env.releaseBranch}-tomaster
+        echo 'Release branch value is: '$RELEASE_BRANCH
+        git branch ${RELEASE_BRANCH}-tomaster HEAD~1
+        git push origin ${RELEASE_BRANCH}-tomaster
     - name: Create Pull request to master with release versions
       run : |
-        
+        echo 'githubAPIUser'${githubAPIUser}
+        curl --user ${githubAPIUser}:${githubAPIToken} -X POST -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/tgosling-genesis/test-release/pulls  -d '{"title":"Automatic PR created from release","head":"'${RELEASE_BRANCH}'-tomaster","base":"master"}'
     - name: Create Pull request to develop with new snapshot versions
       run : | 
-        
+        curl --user ${githubAPIUser}:${githubAPIToken} -X POST -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/tgosling-genesis/test-release/pulls  -d '{"title":"Automatic PR created from release","head":"'${RELEASE_BRANCH}'","base":"develop"}'
     - name: Perform Maven Release 
       run: |
         mvn release:perform
