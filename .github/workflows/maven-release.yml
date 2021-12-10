@@ -46,6 +46,7 @@ jobs:
         mvn -B release:prepare
     - name: Create temporary branch for master PR
       run : |
+        echo 'Release branch value is: '$RELEASE_BRANCH
         git branch ${RELEASE_BRANCH}-tomaster HEAD~1
         git push origin ${RELEASE_BRANCH}-tomaster
     - name: Create Pull request to master with release versions
