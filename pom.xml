@@ -14,7 +14,7 @@
     <groupId>global.genesis.tgosling</groupId>
     <artifactId>test-release</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.12-SNAPSHOT</version>
+    <version>1.0.13-SNAPSHOT</version>
 
     <modules>
         <module>submodule</module>
