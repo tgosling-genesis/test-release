@@ -48,12 +48,10 @@ jobs:
         mvn -B release:prepare
     - name: Create temporary branch for master PR
       run : |
-        echo 'Release branch value is: '$RELEASE_BRANCH
-        git branch ${RELEASE_BRANCH}-tomaster HEAD~1
-        git push origin ${RELEASE_BRANCH}-tomaster
+        git branch /temp/${RELEASE_BRANCH} HEAD~1
+        git push origin /temp/${RELEASE_BRANCH}
     - name: Create Pull request to master with release versions
       run : |
-        echo 'githubAPIUser'${githubAPIUser}
         curl --user ${githubAPIUser}:${githubAPIToken} -X POST -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/tgosling-genesis/test-release/pulls  -d '{"title":"Automatic PR created from release","head":"'${RELEASE_BRANCH}'-tomaster","base":"master"}'
     - name: Create Pull request to develop with new snapshot versions
       run : | 
